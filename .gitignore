@@ -11,6 +11,9 @@
 npm-debug.log
 yarn-error.log
 
+# See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
+
+
 # IDEs and editors
 .idea/
 .project
@@ -25,6 +28,9 @@ yarn-error.log
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
+
+
+# Visual Studio Code
 !.vscode/extensions.json
 .history/*
 
