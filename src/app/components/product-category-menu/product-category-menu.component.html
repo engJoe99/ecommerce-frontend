@@ -4,7 +4,7 @@
       <!-- Loop through categories and display each as a card -->
       <div *ngFor="let tempCategory of productCategories; let i = index"
            class="col-12">
-        <div class="card category-card"
+        <div class="card category-card border-0"
              [title]="tempCategory.categoryName"
              [attr.data-index]="i">
           <a [routerLink]="['/category', tempCategory.id]"
@@ -16,7 +16,7 @@
               <!-- Icon -->
               <i class="fa fa-tag me-3" aria-hidden="true"></i>
               <!-- Category name -->
-              <span class="category-name text-truncate">
+              <span class="category-name">
                 {{ tempCategory.categoryName }}
               </span>
               <!-- Visually hidden text for screen readers -->
