@@ -3,6 +3,8 @@ import {ProductService} from '../../services/product.service';
 import {Product} from '../../common/product';
 import {ActivatedRoute, Router} from '@angular/router';
 import Swal from 'sweetalert2';
+import {CartService} from '../../services/cart.service';
+import {CartItem} from '../../common/cart-item';
 
 @Component({
   selector: 'app-product-list',
@@ -26,10 +28,11 @@ export class ProductListComponent implements OnInit{
   theTotalElements: number = 0;
 
   previousKeyword: string = '';
-  
+
 
 
   constructor(private productService: ProductService,
+              private cartService: CartService,
               private route: ActivatedRoute,
               private router: Router) {}
 
@@ -172,8 +175,15 @@ export class ProductListComponent implements OnInit{
 
 
 
+  addToCart(theProduct: Product): void {
 
+    console.log(`Adding to cart: ${theProduct.name}, ${theProduct.unitPrice}`);
 
+    const theCartItem = new CartItem(theProduct);
+
+    this.cartService.addToCart(theCartItem);
+
+  }
 
 
 

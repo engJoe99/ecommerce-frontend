@@ -587,12 +587,12 @@ input.au-input.au-input-xl{
 /*
  * ----------------------------
 */
- * Shopping Cart Checkout
- * ----------------------------
-/*
+* Shopping Cart Checkout,
+* ----------------------------,
+  /*
 
- */
-.form-area{
+   */
+.form-area {
   background:#e5e5e5;
   position:relative;
   margin-bottom:45px;
@@ -1066,6 +1066,5 @@ footer ul li{
     padding:6px 0;
     background:#fff;
     border:0;
-    padding:8px 0
   }
 }

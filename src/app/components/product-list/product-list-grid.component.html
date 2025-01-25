@@ -6,13 +6,11 @@
 
 
         <!-- if products empty then display a message -->
-        <div  *ngIf="products?.length === 0" class="alert alert-warning mt-3" role="alert">
-          No products found for keyword
-        </div>
 
         <div *ngFor="let tempProduct of products" class="col-md-3 mt-3">
           <div class="card">
             <div class="card-body">
+
               <a routerLink="/products/{{tempProduct.id}}">
                 <img src="{{tempProduct.imageUrl}}" alt="productImg" class="card-img-top">
               </a>
@@ -22,13 +20,16 @@
               </a>
 
               <div class="card-text price">{{tempProduct.unitPrice | currency: 'USD'}}</div>
-              <button class="btn btn-primary mt-2">Add to cart</button>
+              <button (click)="addToCart(tempProduct)" class="btn btn-primary mt-2">Add to cart</button>
+
             </div>
           </div>
-
-
-
         </div>
+
+        <div  *ngIf="products?.length === 0" class="alert alert-warning mt-3" role="alert">
+          No products found for keyword
+        </div>
+
       </div>
 
       <!-- begin footer -->

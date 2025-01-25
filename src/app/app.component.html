@@ -17,13 +17,24 @@
 <body>
     <div class="page-wrapper">
         <!-- MENU SIDEBAR-->
-        <aside class="menu-sidebar d-none d-lg-block">
+        <aside class="menu-sidebar d-lg-block">
+            <!-- Added collapsible navbar for mobile -->
+            <nav class="navbar navbar-expand-lg navbar-light d-lg-none">
+                <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#mobileSidebar" aria-controls="mobileSidebar" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggle-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="mobileSidebar">
+                    <app-product-category-menu></app-product-category-menu>
+                </div>
+            </nav>
             <div class="logo">
                 <a href="#">
-                    <img src="/images/logo.png" alt="LUV2SHOP" class="img-responsive">
+                    <img src="/images/logo.png" alt="LUV2SHOP" class="img-fluid">
                 </a>
             </div>
-            <app-product-category-menu></app-product-category-menu>
+            <div class="d-none d-lg-block">
+                <app-product-category-menu></app-product-category-menu>
+            </div>
         </aside>
         <!-- END MENU SIDEBAR-->
 
@@ -33,15 +44,12 @@
             <header class="header-desktop">
                 <div class="section-content section-content-p30">
                     <div class="container-fluid">
-                        <div class="header-wrap">
-
-                            <app-search></app-search>
-
-                            <div class="cart-area d-n">
-                                <a href="shopping-detail.html">
-                                    <div class="total">19.22 <span>2</span></div>
-                                    <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                                </a>
+                        <div class="header-wrap row align-items-center">
+                            <div class="col-12 col-md-6">
+                                <app-search></app-search>
+                            </div>
+                            <div class="col-12 col-md-6 text-right">
+                                <app-cart-status></app-cart-status>
                             </div>
                         </div>
                     </div>
@@ -54,7 +62,9 @@
                 <div class="section-content section-content-p20">
                     <div class="container-fluid">
                         <div class="row">
-                            <router-outlet></router-outlet>
+                            <div class="col-12">
+                                <router-outlet></router-outlet>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -64,14 +74,20 @@
     </div>
     <!-- END PAGE CONTAINER-->
 
-    <footer>
-        <ul>
-            <li><a href="#">ABOUT US</a></li>
-            <li><a href="#">CONTACT US</a></li>
-            <li><a href="#">HELP</a></li>
-        </ul>
+    <footer class="mt-4">
+        <div class="container">
+            <ul class="nav justify-content-center justify-content-md-start">
+                <li class="nav-item"><a class="nav-link" href="#">ABOUT US</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">CONTACT US</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">HELP</a></li>
+            </ul>
+        </div>
     </footer>
 
+    <!-- Bootstrap JS Dependencies -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 </body>
 </html>
 <!-- end document-->

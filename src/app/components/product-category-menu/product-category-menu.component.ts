@@ -12,6 +12,7 @@ import {ProductService} from '../../services/product.service';
 export class ProductCategoryMenuComponent implements OnInit{
 
   productCategories: ProductCategory[] = [];
+  private currentCategoryId: number | undefined;
 
   constructor(private productService: ProductService){
 
@@ -31,6 +32,8 @@ export class ProductCategoryMenuComponent implements OnInit{
     )
 
   }
+
+
 
 
 
