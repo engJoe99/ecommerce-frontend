@@ -19,8 +19,7 @@ export class SearchComponent implements OnInit {
 
   // Method to perform search based on the input value
   doSearch(value: string) {
-    console.log('doSearch: ' + value);
-    // Navigate to the search results page
+    console.log(`value=${value}`);
     this.router.navigateByUrl(`/search/${value}`);
   }
 

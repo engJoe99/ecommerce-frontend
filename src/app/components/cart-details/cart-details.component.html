@@ -1,0 +1,81 @@
+<div class="main-content">
+  <div class="section-content section-content-p30">
+    <div class="container-fluid">
+
+      <div *ngIf="cartItems.length > 0">
+        <table class="table table-bordered table-hover">
+          <tr class="bg-light">
+            <th width="20%">Product Image</th>
+            <th width="50%">Product Detail</th>
+            <th width="30%">Actions</th>
+          </tr>
+
+          <tr *ngFor="let tempCartItem of cartItems">
+
+            <td class="align-middle">
+              <img src="{{ tempCartItem.imageUrl }}" class="img-fluid rounded" width="200px" alt="{{ tempCartItem.name }}" />
+            </td>
+
+            <td class="align-middle">
+              <h5>{{ tempCartItem.name }}</h5>
+              <p class="text-primary">{{ tempCartItem.unitPrice | currency: 'USD'}}</p>
+            </td>
+
+            <td>
+
+              <div class="items">
+                <label class="font-weight-bold">Quantity</label>
+
+                <div class="d-flex align-items-center mb-2">
+                  <button (click)="decrementQuantity(tempCartItem)" class="btn btn-outline-primary btn-sm">
+                    <i class="fas fa-minus"></i>
+                  </button>
+
+                  <span class="mx-3 font-weight-bold">
+                    {{ tempCartItem.quantity }}
+                  </span>
+
+                  <button (click)="incrementQuantity(tempCartItem)" class="btn btn-outline-primary btn-sm">
+                    <i class="fas fa-plus"></i>
+                  </button>
+                </div>
+
+              </div>
+
+              <button (click)="remove(tempCartItem)" class="btn btn-danger btn-sm mt-2">
+                <i class="fas fa-trash-alt"></i> Remove
+              </button>
+              <p class="mt-2 font-weight-bold"> Subtotal: {{tempCartItem.quantity * tempCartItem.unitPrice | currency: 'USD'}}</p>
+            </td>
+
+          </tr>
+
+          <tr>
+            <td colspan="2"></td>
+            <td class="bg-light p-3 rounded">
+              <p class="h5 mb-3"><i class="fas fa-box"></i> Total Quantity: {{totalQuantity}}</p>
+              <p class="h5 text-success mb-3"><i class="fas fa-truck"></i> Shipping: FREE</p>
+              <hr>
+              <p class="h4 font-weight-bold"><i class="fas fa-money-bill"></i> Total Price: {{totalPrice | currency: 'USD'}}</p>
+              <button routerLink="/checkout" class="btn btn-success btn-block mt-3">
+                 <i class="fas fa-credit-card"></i> Proceed to Checkout
+              </button>
+            </td>
+          </tr>
+
+        </table>
+      </div>
+
+      <!-- if the cart is empty then display a message -->
+      <div *ngIf="cartItems.length == 0" class="alert alert-warning col-md-12 text-center p-5" role="alert">
+        <i class="fas fa-shopping-cart fa-3x mb-4"></i>
+        <p class="h4 mb-3">Your shopping cart is empty</p>
+        <p class="text-muted">Looks like you haven't added any items yet!</p>
+        <a routerLink="/products" class="btn btn-primary mt-3">
+          <i class="fas fa-shopping-bag"></i> Continue Shopping
+        </a>
+      </div>
+
+    </div>
+  </div>
+</div>

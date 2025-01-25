@@ -93,27 +93,9 @@ export class ProductListComponent implements OnInit{
         this.thePageNumber = data.pageable.pageNumber + 1;
         this.thePageSize = data.pageable.pageSize;
         this.theTotalElements = data.totalElements;
-        this.checkProducts();
       }
     );
 
-  }
-
-
-
-  // method of the alert
-  checkProducts() {
-    if (this.products.length === 0) {
-      Swal.fire({
-        title: 'No Products Found',
-        icon: 'warning',
-        confirmButtonText: 'Back to Home'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.router.navigate(['/products']);
-        }
-      });
-    }
   }
 
 
@@ -154,12 +136,9 @@ export class ProductListComponent implements OnInit{
             this.thePageNumber = data.pageable.pageNumber + 1;
             this.thePageSize = data.pageable.pageSize;
             this.theTotalElements = data.totalElements;
-            // Add checkProducts() call here to check for empty results in category listing
-            this.checkProducts();
           }
         );
       }
-
 
     );
 
@@ -176,13 +155,11 @@ export class ProductListComponent implements OnInit{
 
 
   addToCart(theProduct: Product): void {
-
     console.log(`Adding to cart: ${theProduct.name}, ${theProduct.unitPrice}`);
 
     const theCartItem = new CartItem(theProduct);
-
     this.cartService.addToCart(theCartItem);
-
+    this.addSucess();
   }
 
 
@@ -193,7 +170,24 @@ export class ProductListComponent implements OnInit{
 
 
 
+  // --------------------- SweetAlert Methods ------------------
 
+  private addSucess() {
+    Swal.fire({
+      title: 'Success!',
+      text: `Product has been added to your cart`,
+      icon: 'success',
+      timer: 800,
+      showConfirmButton: false,
+      position: 'top-end',
+      toast: true,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer)
+        toast.addEventListener('mouseleave', Swal.resumeTimer)
+      }
+    });
+  }
 
 
 }

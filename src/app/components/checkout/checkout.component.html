@@ -1,0 +1,320 @@
+<div class="main-content page-m" xmlns="http://www.w3.org/1999/html">
+  <div class="section-content section-content-p30">
+    <div class="container-fluid">
+
+      <form [formGroup]="chechoutFormGroup" (ngSubmit)="onSubmit()" class="needs-validation" novalidate>
+
+        <!-- customer form group -->
+      <div formGroupName="customer" class="form-area">
+          <h3>Customer</h3>
+
+          <div class="row">
+            <div class="col-md-2"> <label for="firstName">First Name</label></div>
+            <div class="col-md-9">
+              <div class="input-space">
+                <input type="text" id="firstName" formControlName="firstName" class="form-control" placeholder="Enter your first name" required>
+                <div class="invalid-feedback">First name is required</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-2"> <label for="lastName">Last Name</label></div>
+            <div class="col-md-9">
+              <div class="input-space">
+                <input type="text" id="lastName" formControlName="lastName" class="form-control" placeholder="Enter your last name" required>
+                <div class="invalid-feedback">Last name is required</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-2"> <label for="email">Email</label></div>
+            <div class="col-md-9">
+              <div class="input-space">
+                <input type="email" id="email" formControlName="email" class="form-control" placeholder="Enter your email" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
+                <div class="invalid-feedback">Please enter a valid email address</div>
+              </div>
+            </div>
+        </div>
+
+      </div>
+
+        <!--ShippingAddress form group        -->
+        <div formGroupName="shippingAddress" class="form-area">
+          <h3>Shipping Address</h3>
+
+          <div class="row">
+            <div class="col-md-2"> <label for="shippingCountry">Country</label></div>
+            <div class="col-md-9">
+              <div class="input-space">
+                <select id="shippingCountry" formControlName="country" class="form-control" required>
+                  <option value="">Select Country</option>
+                  <option value="US">United States</option>
+                  <option value="CA">Canada</option>
+                  <option value="UK">United Kingdom</option>
+                </select>
+                <div class="invalid-feedback">Please select a country</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-2"> <label for="shippingStreet">Street</label></div>
+            <div class="col-md-9">
+              <div class="input-space">
+                <input type="text" id="shippingStreet" formControlName="street" class="form-control" placeholder="Enter street address" required>
+                <div class="invalid-feedback">Street address is required</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-2"> <label for="shippingCity">City</label></div>
+            <div class="col-md-9">
+              <div class="input-space">
+                <input type="text" id="shippingCity" formControlName="city" class="form-control" placeholder="Enter city" required>
+                <div class="invalid-feedback">City is required</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-2"> <label for="shippingState">State</label></div>
+            <div class="col-md-9">
+              <div class="input-space">
+                <select id="shippingState" formControlName="state" class="form-control" required>
+                  <option value="">Select State</option>
+                  <option value="CA">California</option>
+                  <option value="NY">New York</option>
+                  <option value="TX">Texas</option>
+                </select>
+                <div class="invalid-feedback">Please select a state</div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-2"> <label for="shippingZip">Zip Code</label></div>
+            <div class="col-md-9">
+              <div class="input-space">
+                <input type="text" id="shippingZip" formControlName="zipCode" class="form-control" pattern="[0-9]{5}" placeholder="Enter zip code" required>
+                <div class="invalid-feedback">Please enter a valid 5-digit zip code</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Add check box to copy shipping to billing -->
+        <div class="input-space">
+            <div class="form-check">
+                <input type="checkbox"
+                       id="sameAddressCheckbox"
+                       class="form-check-input"
+                       (change)="copyShippingAddressToBillingAddress($event)">
+                <label class="form-check-label" for="sameAddressCheckbox">
+                    Billing Address same as Shipping Address
+                </label>
+            </div>
+        </div>
+
+
+        <!--BillingAddress form group        -->
+        <div formGroupName="billingAddress" class="form-area">
+          <h3>Billing Address</h3>
+
+          <div class="row">
+            <div class="col-md-2"> <label for="billingCountry">Country</label></div>
+            <div class="col-md-9">
+              <div class="input-space">
+                <select id="billingCountry" formControlName="country" class="form-control" required>
+                  <option value="">Select Country</option>
+                  <option value="US">United States</option>
+                  <option value="CA">Canada</option>
+                  <option value="UK">United Kingdom</option>
+                </select>
+                <div class="invalid-feedback">Please select a country</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-2"> <label for="billingStreet">Street</label></div>
+            <div class="col-md-9">
+              <div class="input-space">
+                <input type="text" id="billingStreet" formControlName="street" class="form-control" placeholder="Enter street address" required>
+                <div class="invalid-feedback">Street address is required</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-2"> <label for="billingCity">City</label></div>
+            <div class="col-md-9">
+              <div class="input-space">
+                <input type="text" id="billingCity" formControlName="city" class="form-control" placeholder="Enter city" required>
+                <div class="invalid-feedback">City is required</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-2"> <label for="billingState">State</label></div>
+            <div class="col-md-9">
+              <div class="input-space">
+                <select id="billingState" formControlName="state" class="form-control" required>
+                  <option value="">Select State</option>
+                  <option value="CA">California</option>
+                  <option value="NY">New York</option>
+                  <option value="TX">Texas</option>
+                </select>
+                <div class="invalid-feedback">Please select a state</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-2"> <label for="billingZip">Zip Code</label></div>
+            <div class="col-md-9">
+              <div class="input-space">
+                <input type="text" id="billingZip" formControlName="zipCode" class="form-control" pattern="[0-9]{5}" placeholder="Enter zip code" required>
+                <div class="invalid-feedback">Please enter a valid 5-digit zip code</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!--  creditCard form group        -->
+<div formGroupName="creditCard" class="form-area">
+          <h3>Credit Card</h3>
+
+          <div class="row">
+            <div class="col-md-2"> <label for="cardType">Card Type</label></div>
+            <div class="col-md-9">
+              <div class="input-space">
+                <select id="cardType" formControlName="cardType" class="form-control" required>
+                  <option value="">Select Card Type</option>
+                  <option value="VISA">Visa</option>
+                  <option value="MASTERCARD">Master Card</option>
+                  <option value="MEEZA">Meeza</option>
+                </select>
+                <div class="invalid-feedback">Please select a card type</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-2"> <label for="nameOnCard">Name on Card</label></div>
+            <div class="col-md-9">
+              <div class="input-space">
+                <input type="text" id="nameOnCard" formControlName="nameOnCard" class="form-control" placeholder="Name as shown on card" required>
+                <div class="invalid-feedback">Name on card is required</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-2"> <label for="cardNumber">Card Number</label></div>
+            <div class="col-md-9">
+              <div class="input-space">
+                <input type="text" id="cardNumber" formControlName="cardNumber" class="form-control" placeholder="XXXX-XXXX-XXXX-XXXX" maxlength="16" pattern="[0-9]{16}" required>
+                <div class="invalid-feedback">Please enter a valid 16-digit card number</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-2"> <label for="securityCode">Security Code</label></div>
+            <div class="col-md-9">
+              <div class="input-space">
+                <input type="password" id="securityCode" formControlName="securityCode" class="form-control" placeholder="CVV" maxlength="3" pattern="[0-9]{3}" required>
+                <div class="invalid-feedback">Please enter a valid 3-digit security code</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-2"> <label for="expirationMonth">Expiration Month</label></div>
+            <div class="col-md-9">
+              <div class="input-space">
+                <select id="expirationMonth" formControlName="expirationMonth" class="form-control" required>
+                  <option value="">Select Month</option>
+                  <option value="01">January</option>
+                  <option value="02">February</option>
+                  <option value="03">March</option>
+                  <option value="04">April</option>
+                  <option value="05">May</option>
+                  <option value="06">June</option>
+                  <option value="07">July</option>
+                  <option value="08">August</option>
+                  <option value="09">September</option>
+                  <option value="10">October</option>
+                  <option value="11">November</option>
+                  <option value="12">December</option>
+                </select>
+                <div class="invalid-feedback">Please select an expiration month</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-2"> <label for="expirationYear">Expiration Year</label></div>
+            <div class="col-md-9">
+              <div class="input-space">
+                <select id="expirationYear" formControlName="expirationYear" class="form-control" required>
+                  <option value="">Select Year</option>
+                  <option value="2024">2024</option>
+                  <option value="2025">2025</option>
+                  <option value="2026">2026</option>
+                  <option value="2027">2027</option>
+                  <option value="2028">2028</option>
+                  <option value="2029">2029</option>
+                </select>
+                <div class="invalid-feedback">Please select an expiration year</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Order Details -->
+        <div class="form-area">
+          <h3><strong>Order Summary</strong></h3>
+          <div class="order-summary">
+
+            <div class="summary-row">
+              <span><strong>Items:</strong></span>
+              <span><strong>{{totalQuantity}} item(s)</strong></span>
+            </div>
+
+            <div class="summary-row">
+              <span><strong>Subtotal:</strong></span>
+              <span><strong>${{totalPrice | number:'1.2-2'}}</strong></span>
+            </div>
+
+            <div class="summary-row">
+              <span><strong>Shipping:</strong></span>
+              <span class="text-success"><strong>FREE</strong></span>
+            </div>
+
+            <div class="summary-row total">
+              <span><strong>Order Total:</strong></span>
+              <span><strong>${{totalPrice * 1.08 | number:'1.2-2'}}</strong></span>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Submit button ---->
+        <div class="text-center">
+          <button type="submit" class="btn btn-info btn-lg"  style="padding: 10px 30px; margin: 20px 0;">
+            <i class="fas fa-shopping-cart"></i> Complete Purchase
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+</div>

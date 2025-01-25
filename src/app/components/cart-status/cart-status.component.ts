@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {CartService} from '../../services/cart.service';
 import Swal from 'sweetalert2';
+import {CartItem} from '../../common/cart-item';
 
 @Component({
   selector: 'app-cart-status',
@@ -10,6 +11,7 @@ import Swal from 'sweetalert2';
   styleUrl: './cart-status.component.css'
 })
 export class CartStatusComponent implements OnInit{
+
 
 
   totalPrice: number = 0;
@@ -28,32 +30,18 @@ export class CartStatusComponent implements OnInit{
     this.cartService.totalPrice.subscribe(
       data => {
         this.totalPrice = data;
-        this.addSuccess();
       }
     );
 
     // subscribe to the cart totalQuantity
     this.cartService.totalQuantity.subscribe(
-      data => this.totalQuantity = data
+      data => {
+        this.totalQuantity = data;
+        // Show notification when cart is updated
+        //this.addSuccess();
+      }
     );
 
-  }
-
-  private addSuccess() {
-      Swal.fire({
-        position: 'top-end',
-        icon: 'success',
-        title: 'Product added to cart',
-        text: `Cart total: $${this.totalPrice.toFixed(2)}`,
-        showConfirmButton: false,
-        timer: 1500,
-        toast: true,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.addEventListener('mouseenter', Swal.stopTimer)
-          toast.addEventListener('mouseleave', Swal.resumeTimer)
-        }
-      });
   }
 
 

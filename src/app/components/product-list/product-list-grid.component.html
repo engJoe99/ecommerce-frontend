@@ -26,8 +26,9 @@
           </div>
         </div>
 
-        <div  *ngIf="products?.length === 0" class="alert alert-warning mt-3" role="alert">
-          No products found for keyword
+        <div *ngIf="products?.length === 0" class="alert alert-warning mt-3 d-flex align-items-center" role="alert">
+          <i class="fas fa-exclamation-triangle me-2"></i>
+          <span>No products found. Please try a different search keyword.</span>
         </div>
 
       </div>
