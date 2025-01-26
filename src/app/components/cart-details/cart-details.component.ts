@@ -55,7 +55,6 @@ export class CartDetailsComponent implements OnInit{
 
   decrementQuantity(theCartItem: CartItem) {
     this.cartService.decrementQuantity(theCartItem);
-
   }
 
   remove(theCartItem: CartItem) {
@@ -94,5 +93,7 @@ export class CartDetailsComponent implements OnInit{
       showConfirmButton: false
     });
   }
+
+
 
 }

@@ -2,25 +2,25 @@
   <nav class="navbar-sidebar" aria-label="Product Categories Navigation">
     <div class="row g-3">
       <!-- Loop through categories and display each as a card -->
-      <div *ngFor="let tempCategory of productCategories; let i = index"
+      <div *ngFor="let category of productCategories; let i = index"
            class="col-12">
         <div class="card category-card border-0"
-             [title]="tempCategory.categoryName"
+             [title]="category.categoryName"
              [attr.data-index]="i">
-          <a [routerLink]="['/category', tempCategory.id]"
+          <a [routerLink]="['/category', category.id]"
              routerLinkActive="active-link"
              class="text-decoration-none text-dark"
-             [attr.aria-label]="'View ' + tempCategory.categoryName"
-             [attr.data-category-id]="tempCategory.id">
+             [attr.aria-label]="'View ' + category.categoryName"
+             [attr.data-category-id]="category.id">
             <div class="card-body d-flex align-items-center">
               <!-- Icon -->
               <i class="fa fa-tag me-3" aria-hidden="true"></i>
               <!-- Category name -->
-              <span class="category-name">
-                {{ tempCategory.categoryName }}
+              <span class="category-name fs-5">
+                {{ category.categoryName }}
               </span>
               <!-- Visually hidden text for screen readers -->
-              <span class="visually-hidden">Category: {{ tempCategory.categoryName }}</span>
+              <span class="visually-hidden">Category: {{ category.categoryName }}</span>
             </div>
           </a>
         </div>

@@ -4,6 +4,7 @@
          placeholder="Search for products ..."
          class="au-input au-input-xl"
          (keyup.enter)="doSearch(myInput.value)"
+         (change)="doSearch(myInput.value)"
          aria-label="Search products"
          autocomplete="off" />
 

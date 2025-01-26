@@ -5,100 +5,215 @@
       <form [formGroup]="chechoutFormGroup" (ngSubmit)="onSubmit()" class="needs-validation" novalidate>
 
         <!-- customer form group -->
-      <div formGroupName="customer" class="form-area">
-          <h3>Customer</h3>
+  <div formGroupName="customer" class="form-area">
+    <h3>Customer</h3>
 
-          <div class="row">
-            <div class="col-md-2"> <label for="firstName">First Name</label></div>
-            <div class="col-md-9">
-              <div class="input-space">
-                <input type="text" id="firstName" formControlName="firstName" class="form-control" placeholder="Enter your first name" required>
-                <div class="invalid-feedback">First name is required</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-md-2"> <label for="lastName">Last Name</label></div>
-            <div class="col-md-9">
-              <div class="input-space">
-                <input type="text" id="lastName" formControlName="lastName" class="form-control" placeholder="Enter your last name" required>
-                <div class="invalid-feedback">Last name is required</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-md-2"> <label for="email">Email</label></div>
-            <div class="col-md-9">
-              <div class="input-space">
-                <input type="email" id="email" formControlName="email" class="form-control" placeholder="Enter your email" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
-                <div class="invalid-feedback">Please enter a valid email address</div>
-              </div>
-            </div>
-        </div>
-
+    <div class="row">
+      <div class="col-md-2">
+        <label for="firstName" style="font-size: medium; font-weight: bold;">First Name</label>
       </div>
+      <div class="col-md-9">
+        <div class="input-space">
+          <input type="text"
+                 id="firstName"
+                 formControlName="firstName"
+                 class="form-control"
+                 placeholder="Enter your first name">
+          <div *ngIf="chechoutFormGroup.get('customer.firstName')?.invalid &&
+                      (chechoutFormGroup.get('customer.firstName')?.dirty ||
+                       chechoutFormGroup.get('customer.firstName')?.touched)"
+               class="alert alert-danger mt-1">
+            <div *ngIf="chechoutFormGroup.get('customer.firstName')?.errors?.['notOnlyWhiteSpace'] &&
+                        !chechoutFormGroup.get('customer.firstName')?.errors?.['required']">
+              Please enter a valid first name. Whitespace only is not allowed.
+            </div>
+            <div *ngIf="chechoutFormGroup.get('customer.firstName')?.errors?.['required']">
+              First Name is required. Please enter your first name.
+            </div>
+            <div *ngIf="chechoutFormGroup.get('customer.firstName')?.errors?.['minlength']">
+              First Name must be at least 2 characters long. Please enter a longer name.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-2">
+        <label for="lastName" style="font-size: medium; font-weight: bold;">Last Name</label>
+      </div>
+      <div class="col-md-9">
+        <div class="input-space">
+          <input type="text"
+                 id="lastName"
+                 formControlName="lastName"
+                 class="form-control"
+                 placeholder="Enter your last name">
+          <div *ngIf="chechoutFormGroup.get('customer.lastName')?.invalid &&
+                      (chechoutFormGroup.get('customer.lastName')?.dirty ||
+                       chechoutFormGroup.get('customer.lastName')?.touched)"
+               class="alert alert-danger mt-1">
+            <div *ngIf="chechoutFormGroup.get('customer.lastName')?.errors?.['notOnlyWhiteSpace'] &&
+                        !chechoutFormGroup.get('customer.lastName')?.errors?.['required']">
+              Last Name cannot be whitespace only!
+            </div>
+            <div *ngIf="chechoutFormGroup.get('customer.lastName')?.errors?.['required']">
+              Last Name is Required!
+            </div>
+            <div *ngIf="chechoutFormGroup.get('customer.lastName')?.errors?.['minlength']">
+              Last Name must be at least 2 characters long!
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-2">
+        <label for="email" style="font-size: medium; font-weight: bold;">Email</label>
+      </div>
+      <div class="col-md-9">
+        <div class="input-space">
+          <input type="email"
+                 id="email"
+                 formControlName="email"
+                 class="form-control"
+                 placeholder="Enter your email">
+          <div *ngIf="chechoutFormGroup.get('customer.email')?.invalid &&
+                      (chechoutFormGroup.get('customer.email')?.dirty ||
+                       chechoutFormGroup.get('customer.email')?.touched)"
+               class="alert alert-danger mt-1">
+            <div *ngIf="chechoutFormGroup.get('customer.email')?.errors?.['required']">
+              Email is Required!
+            </div>
+            <div *ngIf="chechoutFormGroup.get('customer.email')?.errors?.['pattern']">
+              Email must be a valid email address format!!
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
 
         <!--ShippingAddress form group        -->
         <div formGroupName="shippingAddress" class="form-area">
           <h3>Shipping Address</h3>
 
           <div class="row">
-            <div class="col-md-2"> <label for="shippingCountry">Country</label></div>
+            <div class="col-md-2"> <label for="shippingCountry" style="font-size: medium; font-weight: bold;">Country</label></div>
             <div class="col-md-9">
               <div class="input-space">
-                <select id="shippingCountry" formControlName="country" class="form-control" required>
-                  <option value="">Select Country</option>
-                  <option value="US">United States</option>
-                  <option value="CA">Canada</option>
-                  <option value="UK">United Kingdom</option>
+                <select id="shippingCountry" formControlName="country" class="form-control" (change)="getStates('shippingAddress')">
+                  <option *ngFor="let country of countries" [ngValue]="country">
+                    {{ country.name }}
+                  </option>
                 </select>
-                <div class="invalid-feedback">Please select a country</div>
+
+                <div *ngIf="chechoutFormGroup.get('shippingAddress.country')?.invalid &&
+                           (chechoutFormGroup.get('shippingAddress.country')?.dirty ||
+                           chechoutFormGroup.get('shippingAddress.country')?.touched)"
+                     class="alert alert-danger mt-1">
+
+                  <div *ngIf="chechoutFormGroup.get('shippingAddress.country')?.errors?.['required']">
+                    Country is Required!
+                  </div>
+
+                </div>
+
               </div>
             </div>
           </div>
 
           <div class="row">
-            <div class="col-md-2"> <label for="shippingStreet">Street</label></div>
+            <div class="col-md-2"> <label for="shippingStreet" style="font-size: medium; font-weight: bold;">Street</label></div>
             <div class="col-md-9">
               <div class="input-space">
-                <input type="text" id="shippingStreet" formControlName="street" class="form-control" placeholder="Enter street address" required>
-                <div class="invalid-feedback">Street address is required</div>
+                <input type="text" id="shippingStreet" formControlName="street" class="form-control" placeholder="Enter street address">
+
+                <div *ngIf="chechoutFormGroup.get('shippingAddress.street')?.invalid &&
+                           (chechoutFormGroup.get('shippingAddress.street')?.dirty ||
+                           chechoutFormGroup.get('shippingAddress.street')?.touched)"
+                     class="alert alert-danger mt-1">
+
+                  <div *ngIf="chechoutFormGroup.get('shippingAddress.street')?.errors?.['required'] ||
+                              chechoutFormGroup.get('shippingAddress.street')?.errors?.['notOnlyWhiteSpace']">
+
+                    Street is Required!
+                  </div>
+                </div>
+
               </div>
             </div>
           </div>
 
           <div class="row">
-            <div class="col-md-2"> <label for="shippingCity">City</label></div>
+            <div class="col-md-2"> <label for="shippingCity" style="font-size: medium; font-weight: bold;">City</label></div>
             <div class="col-md-9">
               <div class="input-space">
-                <input type="text" id="shippingCity" formControlName="city" class="form-control" placeholder="Enter city" required>
-                <div class="invalid-feedback">City is required</div>
+                <input type="text" id="shippingCity" formControlName="city" class="form-control" placeholder="Enter city">
+
+                <div *ngIf="chechoutFormGroup.get('shippingAddress.city')?.invalid &&
+                           (chechoutFormGroup.get('shippingAddress.city')?.dirty ||
+                           chechoutFormGroup.get('shippingAddress.city')?.touched)"
+                     class="alert alert-danger mt-1">
+
+                  <div *ngIf="chechoutFormGroup.get('shippingAddress.city')?.errors?.['required'] ||
+                              chechoutFormGroup.get('shippingAddress.city')?.errors?.['notOnlyWhiteSpace']">
+
+                    City is Required!
+                  </div>
+
+                </div>
+
               </div>
             </div>
           </div>
 
           <div class="row">
-            <div class="col-md-2"> <label for="shippingState">State</label></div>
+            <div class="col-md-2"> <label for="shippingState" style="font-size: medium; font-weight: bold;">State</label></div>
             <div class="col-md-9">
               <div class="input-space">
-                <select id="shippingState" formControlName="state" class="form-control" required>
-                  <option value="">Select State</option>
-                  <option value="CA">California</option>
-                  <option value="NY">New York</option>
-                  <option value="TX">Texas</option>
+                <select id="shippingState" formControlName="state" class="form-control">
+                  <option *ngFor="let state of shippingAddressStates" [ngValue]="state">
+                    {{ state.name }}
+                  </option>
                 </select>
-                <div class="invalid-feedback">Please select a state</div>
+
+                <div *ngIf="chechoutFormGroup.get('shippingAddress.state')?.invalid &&
+                           (chechoutFormGroup.get('shippingAddress.state')?.dirty ||
+                           chechoutFormGroup.get('shippingAddress.state')?.touched)"
+                     class="alert alert-danger mt-1">
+
+                  <div *ngIf="chechoutFormGroup.get('shippingAddress.state')?.errors?.['required']">
+                    State is Required!
+                  </div>
+
+                </div>
+
               </div>
             </div>
           </div>
           <div class="row">
-            <div class="col-md-2"> <label for="shippingZip">Zip Code</label></div>
+            <div class="col-md-2"> <label for="shippingZip" style="font-size: medium; font-weight: bold;">Zip Code</label></div>
             <div class="col-md-9">
               <div class="input-space">
-                <input type="text" id="shippingZip" formControlName="zipCode" class="form-control" pattern="[0-9]{5}" placeholder="Enter zip code" required>
-                <div class="invalid-feedback">Please enter a valid 5-digit zip code</div>
+                <input type="text" id="shippingZip" formControlName="zipCode" class="form-control"  placeholder="Enter zip code">
+
+                <div *ngIf="chechoutFormGroup.get('shippingAddress.zipCode')?.invalid &&
+                           (chechoutFormGroup.get('shippingAddress.zipCode')?.dirty ||
+                           chechoutFormGroup.get('shippingAddress.zipCode')?.touched)"
+                     class="alert alert-danger mt-1">
+
+                  <div *ngIf="chechoutFormGroup.get('shippingAddress.zipCode')?.errors?.['required'] ||
+                              chechoutFormGroup.get('shippingAddress.zipCode')?.errors?.['notOnlyWhiteSpace']">
+
+                    Zip Code is Required!
+                  </div>
+
+                </div>
+
+
               </div>
             </div>
           </div>
@@ -112,7 +227,7 @@
                        id="sameAddressCheckbox"
                        class="form-check-input"
                        (change)="copyShippingAddressToBillingAddress($event)">
-                <label class="form-check-label" for="sameAddressCheckbox">
+                <label class="form-check-label" for="sameAddressCheckbox" style="font-size: medium; font-weight: bold;">
                     Billing Address same as Shipping Address
                 </label>
             </div>
@@ -124,61 +239,123 @@
           <h3>Billing Address</h3>
 
           <div class="row">
-            <div class="col-md-2"> <label for="billingCountry">Country</label></div>
+            <div class="col-md-2"> <label for="billingCountry" style="font-size: medium; font-weight: bold;">Country</label></div>
             <div class="col-md-9">
               <div class="input-space">
-                <select id="billingCountry" formControlName="country" class="form-control" required>
-                  <option value="">Select Country</option>
-                  <option value="US">United States</option>
-                  <option value="CA">Canada</option>
-                  <option value="UK">United Kingdom</option>
+                <select id="billingCountry" formControlName="country" class="form-control" (change)="getStates('billingAddress')">
+                  <option *ngFor="let country of countries" [ngValue]="country">
+                    {{ country.name }}
+                  </option>
                 </select>
-                <div class="invalid-feedback">Please select a country</div>
+
+                <div *ngIf="chechoutFormGroup.get('billingAddress.country')?.invalid &&
+                           (chechoutFormGroup.get('billingAddress.country')?.dirty ||
+                           chechoutFormGroup.get('billingAddress.country')?.touched)"
+                     class="alert alert-danger mt-1">
+
+                  <div *ngIf="chechoutFormGroup.get('billingAddress.country')?.errors?.['required']">
+                    Country is Required!
+                  </div>
+
+                </div>
+
               </div>
             </div>
           </div>
 
           <div class="row">
-            <div class="col-md-2"> <label for="billingStreet">Street</label></div>
+            <div class="col-md-2"> <label for="billingStreet" style="font-size: medium; font-weight: bold;">Street</label></div>
             <div class="col-md-9">
               <div class="input-space">
-                <input type="text" id="billingStreet" formControlName="street" class="form-control" placeholder="Enter street address" required>
-                <div class="invalid-feedback">Street address is required</div>
+                <input type="text" id="billingStreet" formControlName="street" class="form-control" placeholder="Enter street address">
+
+                <div *ngIf="chechoutFormGroup.get('billingAddress.street')?.invalid &&
+                           (chechoutFormGroup.get('billingAddress.street')?.dirty ||
+                           chechoutFormGroup.get('billingAddress.street')?.touched)"
+                     class="alert alert-danger mt-1">
+
+                  <div *ngIf="chechoutFormGroup.get('billingAddress.street')?.errors?.['required'] ||
+                              chechoutFormGroup.get('billingAddress.street')?.errors?.['notOnlyWhiteSpace']">
+
+                    Street is Required!
+                  </div>
+                </div>
+
               </div>
             </div>
           </div>
 
           <div class="row">
-            <div class="col-md-2"> <label for="billingCity">City</label></div>
+            <div class="col-md-2"> <label for="billingCity" style="font-size: medium; font-weight: bold;">City</label></div>
             <div class="col-md-9">
               <div class="input-space">
-                <input type="text" id="billingCity" formControlName="city" class="form-control" placeholder="Enter city" required>
-                <div class="invalid-feedback">City is required</div>
+                <input type="text" id="billingCity" formControlName="city" class="form-control" placeholder="Enter city">
+
+                <div *ngIf="chechoutFormGroup.get('billingAddress.city')?.invalid &&
+                           (chechoutFormGroup.get('billingAddress.city')?.dirty ||
+                           chechoutFormGroup.get('billingAddress.city')?.touched)"
+                     class="alert alert-danger mt-1">
+
+                  <div *ngIf="chechoutFormGroup.get('billingAddress.city')?.errors?.['required'] ||
+                              chechoutFormGroup.get('billingAddress.city')?.errors?.['notOnlyWhiteSpace']">
+
+                    City is Required!
+                  </div>
+
+                </div>
+
               </div>
             </div>
           </div>
 
           <div class="row">
-            <div class="col-md-2"> <label for="billingState">State</label></div>
+            <div class="col-md-2"> <label for="shippingState" style="font-size: medium; font-weight: bold;">State</label></div>
             <div class="col-md-9">
               <div class="input-space">
-                <select id="billingState" formControlName="state" class="form-control" required>
-                  <option value="">Select State</option>
-                  <option value="CA">California</option>
-                  <option value="NY">New York</option>
-                  <option value="TX">Texas</option>
+                <select id="billingState" formControlName="state" class="form-control">
+                  <option *ngFor="let state of billingAddressStates" [ngValue]="state">
+                    {{ state.name }}
+                  </option>
                 </select>
-                <div class="invalid-feedback">Please select a state</div>
+
+                <div *ngIf="chechoutFormGroup.get('billingAddress.state')?.invalid &&
+                           (chechoutFormGroup.get('billingAddress.state')?.dirty ||
+                           chechoutFormGroup.get('billingAddress.state')?.touched)"
+                     class="alert alert-danger mt-1">
+
+                  <div *ngIf="chechoutFormGroup.get('billingAddress.state')?.errors?.['required']">
+                    State is Required!
+                  </div>
+
+                </div>
+
               </div>
             </div>
           </div>
 
           <div class="row">
-            <div class="col-md-2"> <label for="billingZip">Zip Code</label></div>
+            <div class="col-md-2"> <label for="billingZip" style="font-size: medium; font-weight: bold;">Zip Code</label></div>
             <div class="col-md-9">
               <div class="input-space">
-                <input type="text" id="billingZip" formControlName="zipCode" class="form-control" pattern="[0-9]{5}" placeholder="Enter zip code" required>
-                <div class="invalid-feedback">Please enter a valid 5-digit zip code</div>
+                <input type="text" id="billingZip" formControlName="zipCode" class="form-control" placeholder="Enter zip code">
+
+                <div *ngIf="chechoutFormGroup.get('billingAddress.zipCode')?.invalid &&
+                           (chechoutFormGroup.get('billingAddress.zipCode')?.dirty ||
+                           chechoutFormGroup.get('billingAddress.zipCode')?.touched)"
+                     class="alert alert-danger mt-1">
+
+                  <div *ngIf="chechoutFormGroup.get('billingAddress.zipCode')?.errors?.['required'] ||
+                              chechoutFormGroup.get('billingAddress.zipCode')?.errors?.['notOnlyWhiteSpace']">
+
+                    Zip Code is Required!
+                  </div>
+
+                  <div *ngIf="chechoutFormGroup.get('billingAddress.zipCode')?.errors?.['minlength']">
+                    Zip Code must be at least 5 numbers long!
+                  </div>
+
+                </div>
+
               </div>
             </div>
           </div>
@@ -186,92 +363,130 @@
         </div>
 
         <!--  creditCard form group        -->
-<div formGroupName="creditCard" class="form-area">
+        <div formGroupName="creditCard" class="form-area">
           <h3>Credit Card</h3>
 
           <div class="row">
-            <div class="col-md-2"> <label for="cardType">Card Type</label></div>
+            <div class="col-md-2"> <label for="cardType" style="font-size: medium; font-weight: bold;">Card Type</label></div>
             <div class="col-md-9">
               <div class="input-space">
-                <select id="cardType" formControlName="cardType" class="form-control" required>
+                <select id="cardType" formControlName="cardType" class="form-control">
                   <option value="">Select Card Type</option>
                   <option value="VISA">Visa</option>
                   <option value="MASTERCARD">Master Card</option>
                   <option value="MEEZA">Meeza</option>
                 </select>
-                <div class="invalid-feedback">Please select a card type</div>
+                <div *ngIf="chechoutFormGroup.get('creditCard.cardType')?.invalid &&
+                           (chechoutFormGroup.get('creditCard.cardType')?.dirty ||
+                            chechoutFormGroup.get('creditCard.cardType')?.touched)"
+                     class="alert alert-danger mt-1">
+                  <div *ngIf="chechoutFormGroup.get('creditCard.cardType')?.errors?.['required']">
+                    Card Type is required
+                  </div>
+                </div>
               </div>
             </div>
           </div>
 
           <div class="row">
-            <div class="col-md-2"> <label for="nameOnCard">Name on Card</label></div>
+            <div class="col-md-2"> <label for="nameOnCard" style="font-size: medium; font-weight: bold;">Name on Card</label></div>
             <div class="col-md-9">
               <div class="input-space">
-                <input type="text" id="nameOnCard" formControlName="nameOnCard" class="form-control" placeholder="Name as shown on card" required>
-                <div class="invalid-feedback">Name on card is required</div>
+                <input type="text" id="nameOnCard" formControlName="nameOnCard" class="form-control" placeholder="Name as shown on card">
+                <div *ngIf="chechoutFormGroup.get('creditCard.nameOnCard')?.invalid &&
+                           (chechoutFormGroup.get('creditCard.nameOnCard')?.dirty ||
+                            chechoutFormGroup.get('creditCard.nameOnCard')?.touched)"
+                     class="alert alert-danger mt-1">
+                  <div *ngIf="chechoutFormGroup.get('creditCard.nameOnCard')?.errors?.['required'] ||
+                             chechoutFormGroup.get('creditCard.nameOnCard')?.errors?.['notOnlyWhiteSpace']">
+                    Name on card is required
+                  </div>
+                  <div *ngIf="chechoutFormGroup.get('creditCard.nameOnCard')?.errors?.['minlength']">
+                    Name must be at least 2 characters long
+                  </div>
+                </div>
               </div>
             </div>
           </div>
 
           <div class="row">
-            <div class="col-md-2"> <label for="cardNumber">Card Number</label></div>
+            <div class="col-md-2"> <label for="cardNumber" style="font-size: medium; font-weight: bold;">Card Number</label></div>
             <div class="col-md-9">
               <div class="input-space">
-                <input type="text" id="cardNumber" formControlName="cardNumber" class="form-control" placeholder="XXXX-XXXX-XXXX-XXXX" maxlength="16" pattern="[0-9]{16}" required>
-                <div class="invalid-feedback">Please enter a valid 16-digit card number</div>
+                <input type="text" id="cardNumber" formControlName="cardNumber" class="form-control" placeholder="XXXX-XXXX-XXXX-XXXX">
+                <div *ngIf="chechoutFormGroup.get('creditCard.cardNumber')?.invalid &&
+                           (chechoutFormGroup.get('creditCard.cardNumber')?.dirty ||
+                            chechoutFormGroup.get('creditCard.cardNumber')?.touched)"
+                     class="alert alert-danger mt-1">
+                  <div *ngIf="chechoutFormGroup.get('creditCard.cardNumber')?.errors?.['required']">
+                    Card number is required
+                  </div>
+                  <div *ngIf="chechoutFormGroup.get('creditCard.cardNumber')?.errors?.['pattern']">
+                    Card number must be 16 digits long
+                  </div>
+                </div>
               </div>
             </div>
           </div>
 
           <div class="row">
-            <div class="col-md-2"> <label for="securityCode">Security Code</label></div>
+            <div class="col-md-2"> <label for="securityCode" style="font-size: medium; font-weight: bold;">Security Code</label></div>
             <div class="col-md-9">
               <div class="input-space">
-                <input type="password" id="securityCode" formControlName="securityCode" class="form-control" placeholder="CVV" maxlength="3" pattern="[0-9]{3}" required>
-                <div class="invalid-feedback">Please enter a valid 3-digit security code</div>
+                <input type="password" id="securityCode" formControlName="securityCode" class="form-control" placeholder="CVV">
+                <div *ngIf="chechoutFormGroup.get('creditCard.securityCode')?.invalid &&
+                           (chechoutFormGroup.get('creditCard.securityCode')?.dirty ||
+                            chechoutFormGroup.get('creditCard.securityCode')?.touched)"
+                     class="alert alert-danger mt-1">
+                  <div *ngIf="chechoutFormGroup.get('creditCard.securityCode')?.errors?.['required']">
+                    Security code is required
+                  </div>
+                  <div *ngIf="chechoutFormGroup.get('creditCard.securityCode')?.errors?.['pattern']">
+                    Security code must be 3 digits long
+                  </div>
+                </div>
               </div>
             </div>
           </div>
 
           <div class="row">
-            <div class="col-md-2"> <label for="expirationMonth">Expiration Month</label></div>
+            <div class="col-md-2"> <label for="expirationMonth" style="font-size: medium; font-weight: bold;">Expiration Month</label></div>
             <div class="col-md-9">
               <div class="input-space">
-                <select id="expirationMonth" formControlName="expirationMonth" class="form-control" required>
-                  <option value="">Select Month</option>
-                  <option value="01">January</option>
-                  <option value="02">February</option>
-                  <option value="03">March</option>
-                  <option value="04">April</option>
-                  <option value="05">May</option>
-                  <option value="06">June</option>
-                  <option value="07">July</option>
-                  <option value="08">August</option>
-                  <option value="09">September</option>
-                  <option value="10">October</option>
-                  <option value="11">November</option>
-                  <option value="12">December</option>
+                <select id="expirationMonth" formControlName="expirationMonth" class="form-control">
+                  <option *ngFor="let month of creditCardMonths">
+                    {{month}}
+                  </option>
                 </select>
-                <div class="invalid-feedback">Please select an expiration month</div>
+                <div *ngIf="chechoutFormGroup.get('creditCard.expirationMonth')?.invalid &&
+                           (chechoutFormGroup.get('creditCard.expirationMonth')?.dirty ||
+                            chechoutFormGroup.get('creditCard.expirationMonth')?.touched)"
+                     class="alert alert-danger mt-1">
+                  <div *ngIf="chechoutFormGroup.get('creditCard.expirationMonth')?.errors?.['required']">
+                    Expiration month is required
+                  </div>
+                </div>
               </div>
             </div>
           </div>
 
           <div class="row">
-            <div class="col-md-2"> <label for="expirationYear">Expiration Year</label></div>
+            <div class="col-md-2"> <label for="expirationYear" style="font-size: medium; font-weight: bold;">Expiration Year</label></div>
             <div class="col-md-9">
               <div class="input-space">
-                <select id="expirationYear" formControlName="expirationYear" class="form-control" required>
-                  <option value="">Select Year</option>
-                  <option value="2024">2024</option>
-                  <option value="2025">2025</option>
-                  <option value="2026">2026</option>
-                  <option value="2027">2027</option>
-                  <option value="2028">2028</option>
-                  <option value="2029">2029</option>
+                <select id="expirationYear" formControlName="expirationYear" class="form-control" (change)="handleMonthsAndYears()">
+                  <option *ngFor="let year of creditCardYears">
+                    {{year}}
+                  </option>
                 </select>
-                <div class="invalid-feedback">Please select an expiration year</div>
+                <div *ngIf="chechoutFormGroup.get('creditCard.expirationYear')?.invalid &&
+                           (chechoutFormGroup.get('creditCard.expirationYear')?.dirty ||
+                            chechoutFormGroup.get('creditCard.expirationYear')?.touched)"
+                     class="alert alert-danger mt-1">
+                  <div *ngIf="chechoutFormGroup.get('creditCard.expirationYear')?.errors?.['required']">
+                    Expiration year is required
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -284,23 +499,18 @@
           <div class="order-summary">
 
             <div class="summary-row">
-              <span><strong>Items:</strong></span>
-              <span><strong>{{totalQuantity}} item(s)</strong></span>
+              <span><strong>Items: </strong></span>
+              <span><strong>{{ totalQuantity }} item(s)</strong></span>
             </div>
 
             <div class="summary-row">
-              <span><strong>Subtotal:</strong></span>
-              <span><strong>${{totalPrice | number:'1.2-2'}}</strong></span>
-            </div>
-
-            <div class="summary-row">
-              <span><strong>Shipping:</strong></span>
+              <span><strong>Shipping: </strong></span>
               <span class="text-success"><strong>FREE</strong></span>
             </div>
 
             <div class="summary-row total">
-              <span><strong>Order Total:</strong></span>
-              <span><strong>${{totalPrice * 1.08 | number:'1.2-2'}}</strong></span>
+              <span><strong>Order Total: </strong></span>
+              <span><strong>{{ totalPrice | number:'1.2-2' | currency: 'USD'}}</strong></span>
             </div>
 
           </div>
