@@ -3,15 +3,25 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="LUV2SHOP - Your one stop shop for all your shopping needs">
+    <meta name="keywords" content="ecommerce, shopping, online store">
     <title>LUV2SHOP - FULL STACK ECOMMERCE: ANGULAR AND SPRING BOOT</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
 
     <!-- Bootstrap CSS and Font Awesome -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" media="all">
 
-    <!-- Main CSS-->
+    <!--Main CSS-->
     <link href="styles.css" rel="stylesheet" media="all">
+
+    <!-- Preconnect to external domains -->
+    <link rel="preconnect" href="https://stackpath.bootstrapcdn.com">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://code.jquery.com">
 </head>
 
 <body>
@@ -28,8 +38,8 @@
                 </div>
             </nav>
             <div class="logo">
-                <a routerLink="/products">
-                    <img src="/images/logo.png" alt="LUV2SHOP" class="img-fluid">
+                <a routerLink="/products" aria-label="Home">
+                    <img src="/images/logo.png" alt="LUV2SHOP" class="img-fluid" width="200" height="60">
                 </a>
             </div>
             <div class="d-none d-lg-block">
@@ -39,17 +49,19 @@
         <!-- END MENU SIDEBAR-->
 
         <!-- PAGE CONTAINER-->
-        <div class="page-container">
+<div class="page-container">
             <!-- HEADER DESKTOP-->
             <header class="header-desktop">
                 <div class="section-content section-content-p30">
                     <div class="container-fluid">
-                        <div class="header-wrap row align-items-center">
+                        <div class="header-wrap row align-items-center justify-content-between">
                             <div class="col-12 col-md-6">
                                 <app-search></app-search>
                             </div>
-                            <div class="col-12 col-md-6 text-right">
-                                <app-cart-status></app-cart-status>
+
+                            <div class="col-12 col-md-6 text-right d-flex justify-content-end align-items-center">
+                                <app-loign-status></app-loign-status>
+                                <app-cart-status class="ml-3"></app-cart-status>
                             </div>
                         </div>
                     </div>
@@ -58,7 +70,7 @@
             <!-- END HEADER DESKTOP-->
 
             <!-- MAIN CONTENT-->
-            <div class="main-content">
+            <main class="main-content" role="main">
                 <div class="section-content section-content-p20">
                     <div class="container-fluid">
                         <div class="row">
@@ -68,26 +80,25 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </main>
             <!-- END MAIN CONTENT-->
         </div>
     </div>
-    <!-- END PAGE CONTAINER-->
 
     <footer class="mt-4">
         <div class="container">
             <ul class="nav justify-content-center justify-content-md-start">
-                <li class="nav-item"><a class="nav-link" href="#">ABOUT US</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">CONTACT US</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">HELP</a></li>
+                <li class="nav-item"><a class="nav-link" href="#" aria-label="About Us">ABOUT US</a></li>
+                <li class="nav-item"><a class="nav-link" href="#" aria-label="Contact Us">CONTACT US</a></li>
+                <li class="nav-item"><a class="nav-link" href="#" aria-label="Help">HELP</a></li>
             </ul>
         </div>
     </footer>
 
     <!-- Bootstrap JS Dependencies -->
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" defer></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" defer></script>
 </body>
 </html>
 <!-- end document-->

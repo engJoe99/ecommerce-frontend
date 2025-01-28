@@ -9,8 +9,8 @@ import {CheckoutService} from '../../services/checkout.service';
 import {Router} from '@angular/router';
 import {Order} from '../../common/order';
 import {OrderItem} from '../../common/order-item';
-import {throwIfEmpty} from 'rxjs';
 import {Purchase} from '../../common/purchase';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-checkout',
@@ -204,20 +204,26 @@ export class CheckoutComponent implements OnInit{
     purchase.orderItems = orderItems;
 
     // call REST API via the CheckoutService
-    this.checkoutService.placeOrder(purchase).subscribe({
-        next: response => {
-          alert(`Your order has been received.\nOrder tracking number: ${response.orderTrackingNumber}`);
+this.checkoutService.placeOrder(purchase).subscribe({
+      next: response => {
+        // reset cart
+        this.cartService.cartItems = [];
+        this.cartService.totalPrice.next(0);
+        this.cartService.totalQuantity.next(0);
 
-          // reset cart
-          this.resetCart();
+        // reset the form
+        this.chechoutFormGroup.reset();
 
-        },
-        error: err => {
-          alert(`There was an error: ${err.message}`);
-        }
+        // Show success message
+        this.orderSuccess(response.orderTrackingNumber);
+      },
+      error: err => {
+        this.orderFailed();
+        console.log(`error occured: ${err.message}`);
       }
-    );
+    });
   }
+
 
 
 
@@ -309,7 +315,7 @@ export class CheckoutComponent implements OnInit{
 
   }
 
-  private resetCart() {
+/*  private resetCart() {
     // reset cart data
     this.cartService.cartItems = [];
     this.cartService.totalPrice.next(0);
@@ -320,7 +326,51 @@ export class CheckoutComponent implements OnInit{
 
     // navigate back to the products page
     this.router.navigateByUrl("/products");
+  }*/
+
+
+
+  //
+  //------------------->>> SweetAlerts <<<------------------
+  //
+
+  private orderSuccess(orderTrackingNumber: string) {
+    Swal.fire({
+      icon: 'success',
+      title: 'Order Placed Successfully!',
+      html: `<br>
+             <strong>Order Tracking Number:</strong><br>
+             <span style="font-size: 1.2em; color: #28a745; font-weight: bold">${orderTrackingNumber}</span>`,
+      showConfirmButton: true,
+      showCancelButton: false,
+      confirmButtonText: 'Back to Products',
+      allowOutsideClick: false,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.router.navigateByUrl('/products');
+      }
+    })
   }
+
+  private orderFailed() {
+    // Show error message with enhanced styling and options
+    Swal.fire({
+      icon: 'error',
+      title: 'Order Failed',
+      text: `Error occurred while processing your order. Please try again.`,
+      showConfirmButton: true,
+      confirmButtonText: 'Try Again',
+      showCancelButton: false,
+      cancelButtonText: 'Return to Cart',
+      reverseButtons: true,
+      allowOutsideClick: false,
+      customClass: {
+        confirmButton: 'btn btn-danger',
+        cancelButton: 'btn btn-secondary'
+      },
+    })
+  }
+
 
 
 
