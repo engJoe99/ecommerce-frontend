@@ -12,8 +12,24 @@ export class CartService {
   totalPrice: Subject<number> = new BehaviorSubject<number>(0);
   totalQuantity: Subject<number> = new BehaviorSubject<number>(0);
 
+// Storage for cart items using session storage
+//storage: Storage = sessionStorage;
+storage: Storage = localStorage;
 
-  constructor() { }
+
+  constructor() {
+
+    // read data from storage
+    let data =  JSON.parse(<string>this.storage.getItem('cartItems'));
+
+    if(data != null) {
+      this.cartItems = data;
+
+      // compute total based on the data that is read from Storage
+      this.computeCartTotals();
+    }
+
+  }
 
 
   addToCart(theCartItem: CartItem) {
@@ -68,7 +84,18 @@ export class CartService {
 
     // log cart data just for debugging purposes
     this.logCartData(totalPriceValue, totalQuantityValue);
+
+    // persist cart data
+    this.persistCartItems();
   }
+
+  // Saves the current cart items to session storage
+  // Converts cart items array to JSON string before storing
+  persistCartItems() {
+    this.storage.setItem('cartItems', JSON.stringify(this.cartItems));
+  }
+
+
 
   logCartData(totalPriceValue: number, totalQuantityValue: number ) {
     console.log('===> contents of the cart: ');
