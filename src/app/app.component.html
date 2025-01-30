@@ -28,18 +28,21 @@
     <div class="page-wrapper">
         <!-- MENU SIDEBAR-->
         <aside class="menu-sidebar d-lg-block">
-            <!-- Added collapsible navbar for mobile -->
+            <!-- Improved mobile navigation -->
             <nav class="navbar navbar-expand-lg navbar-light d-lg-none">
-                <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#mobileSidebar" aria-controls="mobileSidebar" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggle-icon"></span>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mobileSidebar"
+                        aria-controls="mobileSidebar" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="mobileSidebar">
-                    <app-product-category-menu></app-product-category-menu>
+                    <app-product-category-menu class="w-100"></app-product-category-menu>
                 </div>
             </nav>
             <div class="logo">
                 <a routerLink="/products" aria-label="Home">
-                    <img src="/images/logo.png" alt="LUV2SHOP" class="img-fluid" width="200" height="60">
+                    <img src="/images/logo.png" alt="LUV2SHOP" class="img-fluid"
+                         srcset="/images/logo.png 1x, /images/logo@2x.png 2x"
+                         width="200" height="60">
                 </a>
             </div>
             <div class="d-none d-lg-block">
@@ -49,19 +52,21 @@
         <!-- END MENU SIDEBAR-->
 
         <!-- PAGE CONTAINER-->
-<div class="page-container">
+        <div class="page-container">
             <!-- HEADER DESKTOP-->
             <header class="header-desktop">
                 <div class="section-content section-content-p30">
                     <div class="container-fluid">
-                        <div class="header-wrap row align-items-center justify-content-between">
-                            <div class="col-12 col-md-6">
+                        <div class="header-wrap row align-items-center justify-content-between gy-3">
+                            <div class="col-12 col-md-6 col-lg-4">
                                 <app-search></app-search>
                             </div>
 
-                            <div class="col-12 col-md-6 text-right d-flex justify-content-end align-items-center">
-                                <app-loign-status></app-loign-status>
-                                <app-cart-status class="ml-3"></app-cart-status>
+                            <div class="col-12 col-md-6 col-lg-4 text-center text-md-right">
+                                <div class="d-flex justify-content-center justify-content-md-end align-items-center gap-3">
+                                    <app-loign-status></app-loign-status>
+                                    <app-cart-status class="ms-3"></app-cart-status>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -85,12 +90,12 @@
         </div>
     </div>
 
-    <footer class="mt-4">
+    <footer class="mt-4 py-3">
         <div class="container">
-            <ul class="nav justify-content-center justify-content-md-start">
-                <li class="nav-item"><a class="nav-link" href="#" aria-label="About Us">ABOUT US</a></li>
-                <li class="nav-item"><a class="nav-link" href="#" aria-label="Contact Us">CONTACT US</a></li>
-                <li class="nav-item"><a class="nav-link" href="#" aria-label="Help">HELP</a></li>
+            <ul class="nav flex-column flex-md-row justify-content-center justify-content-md-start gap-2">
+                <li class="nav-item"><a class="nav-link px-2" href="#" aria-label="About Us">ABOUT US</a></li>
+                <li class="nav-item"><a class="nav-link px-2" href="#" aria-label="Contact Us">CONTACT US</a></li>
+                <li class="nav-item"><a class="nav-link px-2" href="#" aria-label="Help">HELP</a></li>
             </ul>
         </div>
     </footer>

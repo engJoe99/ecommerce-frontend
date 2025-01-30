@@ -3,14 +3,15 @@
   <input #myInput type="text"
          placeholder="Search for products ..."
          class="au-input au-input-xl"
-         (keyup.enter)="doSearch(myInput.value)"
+         (keyup)="doSearch(myInput.value)"
          (change)="doSearch(myInput.value)"
          aria-label="Search products"
          autocomplete="off" />
 
   <button (click)="doSearch(myInput.value)"
           class="au-btn-submit"
-          aria-label="Search">
+          aria-label="Search"
+          type="button">
     <i class="fa fa-search"></i>
   </button>
 

@@ -19,6 +19,7 @@ import {ReactiveFormsModule} from '@angular/forms';
 import { LoginComponent } from './components/login/login.component';
 import { LoignStatusComponent } from './components/loign-status/loign-status.component';
 import { MembersPageComponent } from './components/members-page/members-page.component';
+import { OrderHistoryComponent } from './components/order-history/order-history.component';
 
 
 import {
@@ -29,6 +30,7 @@ import {
 
 import { OktaAuth } from '@okta/okta-auth-js';
 import myAppConfig from './config/my-app-config';
+
 
 
 const oktaConfig = myAppConfig.oidc;
@@ -51,6 +53,10 @@ function sendToLoginPage(oktaAuth: OktaAuth, injector: Injector) {
 // - '**' - Redirects any unknown paths to products page
 
 const routes: Routes = [
+  { path: 'order-history', component: OrderHistoryComponent},
+  /*{ path: 'order-history', component: OrderHistoryComponent, canActivate: [OktaAuthGuard],
+                                                              data:{onAuthRequired: sendToLoginPage}},*/
+
   { path: 'members', component: MembersPageComponent, canActivate: [OktaAuthGuard],
                                                       data:{onAuthRequired: sendToLoginPage}},
   { path: 'login', component: LoginComponent},
@@ -81,7 +87,8 @@ const routes: Routes = [
     CheckoutComponent,
     LoginComponent,
     LoignStatusComponent,
-    MembersPageComponent
+    MembersPageComponent,
+    OrderHistoryComponent
   ],
   imports: [
     BrowserModule,

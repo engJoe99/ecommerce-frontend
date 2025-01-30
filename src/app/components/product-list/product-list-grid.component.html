@@ -7,26 +7,26 @@
 
         <!-- if products empty then display a message -->
 
-        <div *ngFor="let tempProduct of products" class="col-md-3 mt-3">
-          <div class="card">
-            <div class="card-body">
+        <div *ngFor="let tempProduct of products" class="col-lg-3 col-md-4 col-sm-6 col-12 mt-3">
+          <div class="card h-100">
+            <div class="card-body d-flex flex-column">
 
-              <a routerLink="/products/{{tempProduct.id}}">
-                <img src="{{tempProduct.imageUrl}}" alt="productImg" class="card-img-top">
+              <a routerLink="/products/{{tempProduct.id}}" class="flex-grow-1">
+                <img src="{{tempProduct.imageUrl}}" alt="productImg" class="card-img-top img-fluid">
               </a>
 
               <a routerLink="/products/{{tempProduct.id}}">
-                <h5 class="card-title">{{tempProduct.name}}</h5>
+                <h5 class="card-title text-break">{{tempProduct.name}}</h5>
               </a>
 
-              <div class="card-text price">{{tempProduct.unitPrice | currency: 'USD'}}</div>
-              <button (click)="addToCart(tempProduct)" class="btn btn-primary mt-2">Add to cart</button>
+              <div class="card-text price mt-auto">{{tempProduct.unitPrice | currency: 'USD'}}</div>
+              <button (click)="addToCart(tempProduct)" class="btn btn-primary mt-2 w-100">Add to cart</button>
 
             </div>
           </div>
         </div>
 
-        <div *ngIf="products?.length === 0" class="alert alert-warning mt-3 d-flex align-items-center" role="alert">
+        <div *ngIf="products?.length === 0" class="alert alert-warning mt-3 d-flex align-items-center w-100" role="alert">
           <i class="fas fa-exclamation-triangle me-2"></i>
           <span>No products found. Please try a different search keyword.</span>
         </div>
@@ -53,8 +53,8 @@
 
               <!--Add Drop Down for the page size -->
               <div class="mt-3">
-                <span class="mr-2">Page Size</span>
-                <select #myPageSelect (change)="updatePageSize(myPageSelect.value)">
+                <span class="me-2">Page Size</span>
+                <select #myPageSelect (change)="updatePageSize(myPageSelect.value)" class="form-select form-select-sm d-inline-block w-auto">
                   <option>2</option>
                   <option>5</option>
                   <option selected="selected">10</option>

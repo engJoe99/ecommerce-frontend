@@ -3,7 +3,7 @@
     <div class="row g-3">
       <!-- Loop through categories and display each as a card -->
       <div *ngFor="let category of productCategories; let i = index"
-           class="col-12">
+           class="col-12 d-inline-block">
         <div class="card category-card border-0"
              [title]="category.categoryName"
              [attr.data-index]="i">
@@ -16,7 +16,7 @@
               <!-- Icon -->
               <i class="fa fa-tag me-3" aria-hidden="true"></i>
               <!-- Category name -->
-              <span class="category-name fs-5">
+              <span class="category-name fs-5 d-inline">
                 {{ category.categoryName }}
               </span>
               <!-- Visually hidden text for screen readers -->
