@@ -18,13 +18,13 @@ export class Luv2shopFormService {
 
   // Retrieves a list of countries from the backend API
   getCountries(): Observable<Country[]>  {
-    const searchUrl = `http://localhost:8080/api-countries/countries`;
+    const searchUrl = `https://localhost:8443/api-countries/countries`;
     return this.httpClient.get<Country[]>(searchUrl);
   }
 
   // Returns a list of states for a given country ID from the backend API
   getStatesByCountryId(theCountryId: number) : Observable<State[]> {
-    const searchUrl = `http://localhost:8080/api-states/statesByCountryId/${theCountryId}`;
+    const searchUrl = `https://localhost:8443/api-states/statesByCountryId/${theCountryId}`;
     return this.httpClient.get<State[]>(searchUrl);
   }
 

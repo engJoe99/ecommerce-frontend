@@ -12,9 +12,9 @@ export class CartService {
   totalPrice: Subject<number> = new BehaviorSubject<number>(0);
   totalQuantity: Subject<number> = new BehaviorSubject<number>(0);
 
-// Storage for cart items using session storage
-//storage: Storage = sessionStorage;
-storage: Storage = localStorage;
+  // Storage for cart items using session storage
+  //storage: Storage = sessionStorage;
+  storage: Storage = localStorage;
 
 
   constructor() {

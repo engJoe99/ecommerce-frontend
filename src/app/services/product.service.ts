@@ -12,7 +12,7 @@ import {Page} from '../models/page';
 export class ProductService {
 
   private baseUrl = 'http://localhost:8080/api/products';
-  private categoryUrl = 'http://localhost:8080/category/all'
+  private categoryUrl = 'https://localhost:8443/category/all'
 
 
 
@@ -21,7 +21,7 @@ export class ProductService {
   // This method returns an Observable of Product array by making an HTTP GET request to the baseUrl
   // It fetches the list of products from the backend API endpoint
   getProductList(theCategoryId: number): Observable<Product[]> {
-      const searchUrl = `http://localhost:8080/api/category/${theCategoryId}`;
+      const searchUrl = `https://localhost:8443/api/category/${theCategoryId}`;
       return this.httpClient.get<Product[]>(searchUrl);
   }
 
@@ -30,7 +30,7 @@ export class ProductService {
   // It constructs a search URL using the keyword and makes an HTTP GET request to the baseUrl
   // Returns an Observable that emits an array of Product objects
   searchProducts(keyword: string): Observable<Product[]> {
-    const searchUrl = `http://localhost:8080/api/products/search/${keyword}`;
+    const searchUrl = `https://localhost:8443/api/products/search/${keyword}`;
     return this.httpClient.get<Product[]>(searchUrl);
   }
 
@@ -48,7 +48,7 @@ export class ProductService {
   // @param theProductId - The ID of the product to fetch
   // @returns Observable<Product> - An Observable that emits the requested product
   getProduct(theProductId: number): Observable<Product> {
-    const productUrl =`http://localhost:8080/api/products/${theProductId}`
+    const productUrl =`https://localhost:8443/api/products/${theProductId}`
     return this.httpClient.get<Product>(productUrl);
   }
 
@@ -62,7 +62,7 @@ export class ProductService {
   getProductListPaginate(thePage: number,
                            thePageSize: number,
                            theCategoryId: number): Observable<Page<Product>> {
-      const searchUrl = `http://localhost:8080/api/${theCategoryId}/productsPaging?page=${thePage}&size=${thePageSize}`;
+      const searchUrl = `https://localhost:8443/api/${theCategoryId}/productsPaging?page=${thePage}&size=${thePageSize}`;
       return this.httpClient.get<Page<Product>>(searchUrl);
   }
 
@@ -76,7 +76,7 @@ export class ProductService {
   searchProductsPaginate(thePage: number,
                           thePageSize: number,
                           keyword: string): Observable<Page<Product>> {
-    const searchUrl = `http://localhost:8080/api/${keyword}/paging?page=${thePage}&size=${thePageSize}`;
+    const searchUrl = `https://localhost:8443/api/${keyword}/paging?page=${thePage}&size=${thePageSize}`;
     return this.httpClient.get<Page<Product>>(searchUrl);
   }
 

@@ -8,7 +8,7 @@ export default {
     // URL when authorizing with Okta Authorization server, Issuer of tokens from Okta
     issuer: 'https://dev-76684086.okta.com/oauth2/default',
     // URL to redirect after successful login
-    redirectUri: 'http://localhost:4200/login/callback',
+    redirectUri: 'https://localhost:4200/login/callback',
     // Required authorization scopes, Scopes provide access to information about the user
     scopes: ['openid', 'profile', 'email']
 

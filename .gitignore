@@ -46,3 +46,14 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# Certificate files
+*.pem
+*.key
+*.crt
+*.cer
+*.der
+*.p7b
+*.p7c
+*.pfx
+*.p12

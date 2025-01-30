@@ -22,7 +22,7 @@ export class OrderHistoryService {
   getOrderHistory(theEmail: string,
                   thePage: number,
                   thePageSize: number): Observable<Page<OrderHistory>> {
-    const url = `http://localhost:8080/api-orders/${theEmail}/paging?page=${thePage}&size=${thePageSize}`;
+    const url = `https://localhost:8443/api-orders/${theEmail}/paging?page=${thePage}&size=${thePageSize}`;
     return this.httpClient.get<Page<OrderHistory>>(url);
   }
 
