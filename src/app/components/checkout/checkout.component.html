@@ -363,6 +363,24 @@
         </div>
 
         <!--  creditCard form group        -->
+
+        <!--  Stripe Elements Credit Card Section        -->
+        <div formGroupName="creditCard" class="form-area">
+
+          <h3>Credit or Debit Card</h3>
+
+          <div id="card-element">
+            <!-- a Stripe element will be inserted here -->
+          </div>
+
+          <!-- Used to display form errors -->
+          <div id="card-errors" class="displayError.textContent!=='': 'alert alert-danger mt-1'"></div>
+
+        </div>
+
+
+        <!-- before Stripe!!!! ---->
+        <!--
         <div formGroupName="creditCard" class="form-area">
           <h3>Credit Card</h3>
 
@@ -492,6 +510,7 @@
           </div>
 
         </div>
+        -->
 
         <!-- Order Details -->
         <div class="form-area">
@@ -518,7 +537,7 @@
 
         <!-- Submit button ---->
         <div class="text-center">
-          <button type="submit" class="btn btn-info btn-lg"  style="padding: 10px 30px; margin: 20px 0;">
+          <button type="submit" class="btn btn-info btn-lg" [disabled]="isDisabled"  style="padding: 10px 30px; margin: 20px 0;">
             <i class="fas fa-shopping-cart"></i> Complete Purchase
           </button>
         </div>

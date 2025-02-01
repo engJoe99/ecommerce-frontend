@@ -11,6 +11,8 @@ import {Order} from '../../common/order';
 import {OrderItem} from '../../common/order-item';
 import {Purchase} from '../../common/purchase';
 import Swal from 'sweetalert2';
+import {PaymentInfo} from '../../common/payment-info';
+import {loadStripe} from '@stripe/stripe-js';
 
 @Component({
   selector: 'app-checkout',
@@ -36,15 +38,33 @@ export class CheckoutComponent implements OnInit{
 
   storage: Storage = sessionStorage;
 
+  // initialize stripe API
+  stripe = new Stripe('pk_test_51QnizSK5urZJZjKhk5JZOJ7c0swIT3brhPnOANxTehnppE5C6NfozpGhoXqE0i8uokP1nXgRhVu61CzTwuZnfr9G00pa2yPsPg');
+  // stripePromise = loadStripe('pk_test_51QnizSK5urZJZjKhk5JZOJ7c0swIT3brhPnOANxTehnppE5C6NfozpGhoXqE0i8uokP1nXgRhVu61CzTwuZnfr9G00pa2yPsPg');
+
+
+  paymentInfo: PaymentInfo = new PaymentInfo();
+  cardElement: any;
+  displayError: any = "";
+
+  isDisabled: boolean = false;
+
+
 
   constructor(private formBuilder: FormBuilder,
               private cartService: CartService,
               private luv2shopFormService: Luv2shopFormService,
               private checkoutService: CheckoutService,
               private router: Router
-              ) {}
+  ) {}
+
+
+
 
   ngOnInit(): void {
+
+    // setup Stripe Payment form
+    this.setupStripePaymentForm();
 
     // order Summary
     this.reviewCartDetails();
@@ -56,69 +76,69 @@ export class CheckoutComponent implements OnInit{
     this.chechoutFormGroup = this.formBuilder.group({
       customer: this.formBuilder.group({
         firstName: new FormControl('',
-                                  [Validators.required,
-                                    Validators.minLength(2),
-                                    Luv2ShopValidators.notOnlyWhiteSpace]),
+          [Validators.required,
+            Validators.minLength(2),
+            Luv2ShopValidators.notOnlyWhiteSpace]),
 
         lastName: new FormControl('',
-                                  [Validators.required,
-                                    Validators.minLength(2),
-                                    Luv2ShopValidators.notOnlyWhiteSpace]),
+          [Validators.required,
+            Validators.minLength(2),
+            Luv2ShopValidators.notOnlyWhiteSpace]),
 
         email: new FormControl(theEmail, [Validators.required,
-                                    Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
-                                    Luv2ShopValidators.notOnlyWhiteSpace]
+          Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'),
+          Luv2ShopValidators.notOnlyWhiteSpace]
         )
       }),
       shippingAddress: this.formBuilder.group({
         street: new FormControl('', [Validators.required,
-                                      Validators.minLength(2),
-                                      Luv2ShopValidators.notOnlyWhiteSpace]),
+          Validators.minLength(2),
+          Luv2ShopValidators.notOnlyWhiteSpace]),
 
         city: new FormControl('', [Validators.required,
-                                    Validators.minLength(2),
-                                    Luv2ShopValidators.notOnlyWhiteSpace]),
+          Validators.minLength(2),
+          Luv2ShopValidators.notOnlyWhiteSpace]),
 
         state: new FormControl('', [Validators.required]),
 
         country: new FormControl('', [Validators.required]),
 
         zipCode: new FormControl('', [Validators.required,
-                                    Validators.minLength(2),
-                                    Luv2ShopValidators.notOnlyWhiteSpace]),
+          Validators.minLength(2),
+          Luv2ShopValidators.notOnlyWhiteSpace]),
       }),
       billingAddress: this.formBuilder.group({
         street: new FormControl('', [Validators.required,
-                                      Validators.minLength(2),
-                                      Luv2ShopValidators.notOnlyWhiteSpace]),
+          Validators.minLength(2),
+          Luv2ShopValidators.notOnlyWhiteSpace]),
 
         city: new FormControl('', [Validators.required,
-                                    Validators.minLength(2),
-                                    Luv2ShopValidators.notOnlyWhiteSpace]),
+          Validators.minLength(2),
+          Luv2ShopValidators.notOnlyWhiteSpace]),
 
         state: new FormControl('', [Validators.required]),
 
         country: new FormControl('', [Validators.required]),
 
         zipCode: new FormControl('', [Validators.required,
-                                      Validators.minLength(2),
-                                      Luv2ShopValidators.notOnlyWhiteSpace]),
+          Validators.minLength(2),
+          Luv2ShopValidators.notOnlyWhiteSpace]),
       }),
-        creditCard: this.formBuilder.group({
+      creditCard: this.formBuilder.group({
 
         cardType: new FormControl('', [Validators.required]),
 
         nameOnCard: new FormControl('', [Validators.required,
-                                         Validators.minLength(2),
-                                         Luv2ShopValidators.notOnlyWhiteSpace]),
+          Validators.minLength(2),
+          Luv2ShopValidators.notOnlyWhiteSpace]),
 
         cardNumber: new FormControl('', [Validators.required,
-                                         Validators.pattern('[0-9]{16}'),
-                                         Luv2ShopValidators.notOnlyWhiteSpace]),
+          Validators.pattern('[0-9]{16}'),
+          Luv2ShopValidators.notOnlyWhiteSpace]),
 
         securityCode: new FormControl('', [Validators.required,
-                                           Validators.pattern('[0-9]{3}'),
-                                           Luv2ShopValidators.notOnlyWhiteSpace]),
+          Validators.pattern('[0-9]{3}'),
+          Luv2ShopValidators.notOnlyWhiteSpace]),
 
         expirationMonth: new FormControl('', [Validators.required]),
 
@@ -127,7 +147,21 @@ export class CheckoutComponent implements OnInit{
     });
 
 
-    // populate credit card months
+
+
+
+
+    // -------------- NO need after integration with Stripe -----------------------------
+    /*
+    // populate credit card years
+    this.luv2shopFormService.getCreditCardYears().subscribe(
+      data => {
+        console.log("Retrieved Credit Card Years: " + JSON.stringify(data));
+        this.creditCardYears = data;
+      }
+    )
+
+      // populate credit card months
     const startMonth: number = new Date().getMonth() + 1;
     console.log("startMonth: " + startMonth);
 
@@ -137,14 +171,10 @@ export class CheckoutComponent implements OnInit{
         this.creditCardMonths = data;
       }
     );
+    */
 
-    // populate credit card years
-    this.luv2shopFormService.getCreditCardYears().subscribe(
-      data => {
-        console.log("Retrieved Credit Card Years: " + JSON.stringify(data));
-        this.creditCardYears = data;
-      }
-    )
+
+
 
     // populate countries
     this.luv2shopFormService.getCountries().subscribe(
@@ -212,8 +242,89 @@ export class CheckoutComponent implements OnInit{
     purchase.order = order;
     purchase.orderItems = orderItems;
 
+    // compute payment info
+    this.paymentInfo.amount = Math.round(this.totalPrice * 100);
+    this.paymentInfo.currency = "USD";
+
+
+
+    // if valid form then
+    // - create payment intent
+    // - confirm card payment
+    // - place order
+
+    // Check if the form is valid and there are no card validation errors
+    if (!this.chechoutFormGroup.invalid && this.displayError.textContent === "") {
+
+      this.isDisabled = true;
+
+      // Create a payment intent on the server side by calling our REST API
+      this.checkoutService.createPaymentIntent(this.paymentInfo).subscribe(
+        (paymentIntentResponse) => {
+          // Use Stripe to confirm the card payment using the client secret
+          this.stripe.confirmCardPayment(paymentIntentResponse.client_secret,
+            {
+              payment_method: {
+                card: this.cardElement, // Pass the card element containing user's card details
+                billing_details: {
+                  email: purchase.customer.email,
+                  name: `${purchase.customer.firstName} ${purchase.customer.lastName}`,
+                  address: {
+                    line1: purchase.billingAddress.street,
+                    city: purchase.billingAddress.city,
+                    state: purchase.billingAddress.state,
+                    country: purchase.billingAddress.country,
+                    postal_code: purchase.billingAddress.zipCode
+                  }
+                }
+              }
+            }, { handleActions: false })
+            .then((result: any) => {
+              if (result.error) {
+                // Payment failed - show error message to user
+                alert(`There was an error: ${result.error.message}`);
+                this.isDisabled = false;
+              } else {
+                // Payment successful - place the order via REST API
+                this.checkoutService.placeOrder(purchase).subscribe({
+                  next: (response: any) => {
+                    // reset cart
+                    this.cartService.cartItems = [];
+                    this.cartService.totalPrice.next(0);
+                    this.cartService.totalQuantity.next(0);
+                    this.cartService.persistCartItems();
+                    this.isDisabled = false;
+
+                    // reset the form
+                    this.chechoutFormGroup.reset();
+
+                    // Show success message
+                    this.orderSuccess(response.orderTrackingNumber);
+                  },
+                  error: err => {
+                    // Show error if order placement fails
+                    alert(`There was an error: ${err.message}`);
+                    this.isDisabled = false;
+                  }
+                })
+              }
+            })
+        }
+      );
+    } else {
+      // Form is invalid - mark all fields as touched to trigger validation display
+      this.chechoutFormGroup.markAllAsTouched();
+      return;
+    }
+
+
+
+
+
+    // ============> Before Integrating with Stripe <=================
     // call REST API via the CheckoutService
-this.checkoutService.placeOrder(purchase).subscribe({
+    /*
+    this.checkoutService.placeOrder(purchase).subscribe({
       next: response => {
         // reset cart
         this.cartService.cartItems = [];
@@ -231,6 +342,7 @@ this.checkoutService.placeOrder(purchase).subscribe({
         console.log(`error occured: ${err.message}`);
       }
     });
+    */
   }
 
 
@@ -238,23 +350,25 @@ this.checkoutService.placeOrder(purchase).subscribe({
 
 
   copyShippingAddressToBillingAddress(event: Event) {
-        if ((event.target as HTMLInputElement).checked) {
-          this.chechoutFormGroup.get('billingAddress')
-            ?.setValue(this.chechoutFormGroup.get('shippingAddress')?.value);
+    if ((event.target as HTMLInputElement).checked) {
+      this.chechoutFormGroup.get('billingAddress')
+        ?.setValue(this.chechoutFormGroup.get('shippingAddress')?.value);
 
-          // bug fix for states
-          this.billingAddressStates = this.shippingAddressStates;
-        }
-        else {
-          this.chechoutFormGroup.get('billingAddress')?.reset();
+      // bug fix for states
+      this.billingAddressStates = this.shippingAddressStates;
+    }
+    else {
+      this.chechoutFormGroup.get('billingAddress')?.reset();
 
-          // bug fix for states
-          this.billingAddressStates = [];
-        }
+      // bug fix for states
+      this.billingAddressStates = [];
+    }
 
   }
 
 
+  // ------------------ NO need after Stripe integration ------------------------------
+  /*
   handleMonthsAndYears() {
 
     const creditCardCardFormGroup = this.chechoutFormGroup.get('creditCard');
@@ -279,6 +393,7 @@ this.checkoutService.placeOrder(purchase).subscribe({
       }
     )
   }
+  */
 
 
   getStates(formGroupName: string) {
@@ -324,7 +439,7 @@ this.checkoutService.placeOrder(purchase).subscribe({
 
   }
 
-/*  private resetCart() {
+  private resetCart() {
     // reset cart data
     this.cartService.cartItems = [];
     this.cartService.totalPrice.next(0);
@@ -335,8 +450,34 @@ this.checkoutService.placeOrder(purchase).subscribe({
 
     // navigate back to the products page
     this.router.navigateByUrl("/products");
-  }*/
+  }
 
+
+  setupStripePaymentForm() {
+
+    // get a handle to stripe elements
+    var elements = this.stripe.elements();
+
+    // Create a card element ... and hide the zip-code field
+    this.cardElement = elements.create('card', { hidePostalCode: true });
+
+    // Add an instance of card UI component into the 'card-element' div
+    this.cardElement.mount('#card-element');
+
+    // Add event binding for the 'change' event on the card element
+    this.cardElement.on('change', (event: any) => {
+
+      // get a handle to card-errors element
+      this.displayError = document.getElementById('card-errors');
+
+      if (event.complete) {
+        this.displayError.textContent = "";
+      } else if (event.error) {
+        // show validation error to customer
+        this.displayError.textContent = event.error.message;
+      }
+    });
+  }
 
 
   //
@@ -379,7 +520,6 @@ this.checkoutService.placeOrder(purchase).subscribe({
       },
     })
   }
-
 
 
 
